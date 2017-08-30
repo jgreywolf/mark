@@ -14,6 +14,7 @@ namespace mark
 {
     public partial class MainForm : Form
     {
+        private const bool DEBUG = true;
         private readonly string currentDir = Environment.CurrentDirectory;
 
         private string currentFilePath;
@@ -62,12 +63,12 @@ namespace mark
 
         private void init()
         {
-            this.currentFilePath = null;
+            this.currentFilePath = "Untitled";
             this.currentFileStream = null;
             this.currentFileReader = null;
             this.currentFileWriter = null;
             this.currentFileContent = null;
-            this.Text = "MarkEditor - " + "Untitled";
+            this.Text = "MarkEditor - " + this.currentFilePath;
         }
 
         public void updatePreview()
@@ -107,7 +108,7 @@ namespace mark
         }
 
 
-        /* ================================ UI ============================== */
+/* ========================================= UI ========================================== */
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             updatePreview();
@@ -117,6 +118,33 @@ namespace mark
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
             save();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
+            MarkProcessor.Initialize();
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (DEBUG) return;
+            if (!this.Text.EndsWith("*")) return;
+            DialogResult dialogResult = MessageBox.Show(
+                "Save changes to\"" + currentFilePath + "\"?",
+                "MarkEditor",
+                MessageBoxButtons.YesNoCancel);
+            if (dialogResult == DialogResult.Yes)
+            {
+                save();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                // do nothing
+            }
+            else
+            {
+                e.Cancel = true;
+            }
         }
     }
 }
