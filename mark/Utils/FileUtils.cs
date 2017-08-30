@@ -9,12 +9,11 @@ namespace mark.Utils
 {
     class FileUtils
     {
-        public static StreamWriter getStreamWriter(string filePath)
+        public static FileStream getFileStream(string filePath)
         {
             if (File.Exists(filePath))
             {
-                FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
-                return new StreamWriter(fs);
+                return new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
             }
             else
             {
@@ -23,8 +22,7 @@ namespace mark.Utils
                     "MarkEditor", MessageBoxButtons.YesNo);
                 if (dialogResult == DialogResult.Yes)
                 {
-                    FileStream fs = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                    return new StreamWriter(fs);
+                    return new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
                 }
             }
             return null;
