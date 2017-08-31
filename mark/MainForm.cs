@@ -73,7 +73,7 @@ namespace mark
 
         public void updatePreview()
         {
-            String html = MarkProcessor.ToHtml(richTextBox1.Text);
+            String html = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
             webBrowser1.DocumentText = html;
         }
 
