@@ -120,6 +120,12 @@ namespace mark
             save();
         }
 
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            this.Size = new Size(1200, 650);
+            this.Location = new Point(90, 30);
+        }
+
         private void MainForm_Shown(object sender, EventArgs e)
         {
             MarkProcessor.Initialize();
@@ -145,6 +151,16 @@ namespace mark
             {
                 e.Cancel = true;
             }
+        }
+
+        private void btnSettings_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnPreview_Click(object sender, EventArgs e)
+        {
+            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
     }
 }

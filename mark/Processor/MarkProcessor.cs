@@ -14,7 +14,7 @@ namespace mark.Processor
 {
     class MarkProcessor
     {
-        private static readonly Regex imageUrlRegex = new Regex(@"^(http://|https://|ftp://|file:///)",RegexOptions.IgnoreCase);
+        private static readonly Regex urlRegex = new Regex(@"^(http://|https://|ftp://|file:///)", RegexOptions.IgnoreCase);
         private static MarkdownPipeline pipeline = null;
 
         public static void Initialize()
@@ -59,7 +59,7 @@ namespace mark.Processor
                 if (link != null && link.IsImage)
                 {
                     string url = link.Url;
-                    if (!imageUrlRegex.IsMatch(url))
+                    if (!urlRegex.IsMatch(url))
                     {
                         if (!Path.IsPathRooted(url) && currentDir != null)
                             url = Path.GetFullPath(Path.Combine(currentDir, url)).Replace('\\', '/');
