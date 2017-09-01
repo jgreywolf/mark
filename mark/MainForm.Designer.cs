@@ -109,14 +109,16 @@
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+            this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
+            this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -155,12 +157,14 @@
             this.richTextBox1.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.richTextBox1.Font = new System.Drawing.Font("Microsoft YaHei", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBox1.HideSelection = false;
             this.richTextBox1.Location = new System.Drawing.Point(0, 0);
             this.richTextBox1.Name = "richTextBox1";
             this.richTextBox1.Size = new System.Drawing.Size(368, 361);
             this.richTextBox1.TabIndex = 0;
             this.richTextBox1.Text = "";
             this.richTextBox1.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
+            this.richTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.richTextBox1_KeyDown);
             // 
             // webBrowser1
             // 

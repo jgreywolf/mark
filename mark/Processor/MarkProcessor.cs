@@ -56,7 +56,7 @@ namespace mark.Processor
             {
                 // LinkInline can be both an image or a <a href="...">
                 LinkInline link = child as LinkInline;
-                if (link != null && link.IsImage)
+                if (link != null)
                 {
                     string url = link.Url;
                     if (!urlRegex.IsMatch(url))

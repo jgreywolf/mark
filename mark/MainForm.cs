@@ -9,6 +9,8 @@ using System.IO;
 using System.Windows.Forms;
 using mark.Processor;
 using mark.Utils;
+using System.Drawing.Imaging;
+using System.Collections.Specialized;
 
 namespace mark
 {
@@ -107,8 +109,49 @@ namespace mark
             }
         }
 
+        private void paste()
+        {
+            /*MessageBox.Show("Image: " + Clipboard.ContainsImage()
+                + "\nFileDropList: " + Clipboard.ContainsFileDropList()
+                + "\nText: " + Clipboard.ContainsText()
+                + "\nAudio: " + Clipboard.ContainsAudio());*/
+            if (Clipboard.ContainsImage())
+            {
+                Image img = Clipboard.GetImage();
+                string imgDir = currentDir + "/_image/";
+                string imgName = "a.jpg";
+                if (!Directory.Exists(imgDir))
+                    Directory.CreateDirectory(imgDir);
 
-/* ========================================= UI ========================================== */
+                img.Save(imgDir + imgName, ImageFormat.Jpeg);
+                Clipboard.SetText("![](./_image/"+imgName+")");
+                richTextBox1.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
+                Clipboard.SetImage(img);
+            }
+            else if (Clipboard.ContainsFileDropList())
+            {
+                StringCollection files = Clipboard.GetFileDropList();
+                string attachmentDir = currentDir + "/_attachment/";
+                if (!Directory.Exists(attachmentDir))
+                    Directory.CreateDirectory(attachmentDir);
+
+                foreach (string file in files)
+                {
+                    string fileName = Path.GetFileName(file).Replace(" ", "");
+                    File.Copy(file, attachmentDir + fileName);
+                    Clipboard.SetText("["+fileName+"](./_attachment/"+fileName+")");
+                    richTextBox1.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
+                }
+                Clipboard.SetFileDropList(files);
+            }
+            else
+            {
+                richTextBox1.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
+            }
+        }
+
+
+        /* ========================================= UI ========================================== */
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             updatePreview();
@@ -161,6 +204,19 @@ namespace mark
         private void btnPreview_Click(object sender, EventArgs e)
         {
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+        }
+
+        private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+            {
+                paste();
+            }
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            paste();
         }
     }
 }
