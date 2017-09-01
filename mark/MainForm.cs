@@ -17,8 +17,18 @@ namespace mark
     public partial class MainForm : Form
     {
         private const bool DEBUG = true;
-        private readonly string currentDir = Environment.CurrentDirectory;
 
+        /**
+         * For initialization, there are two situations:
+         * (1) No args. In this case, MarkEditor is initialized after init() method is finished.
+         * (2) One arg. In this case, MarkEditor is not fully initialized until preview() method
+         *     is called. Because it may prolong the launch time, it will not be automatically
+         *     called when launching MarkEditor.
+         * 
+         */
+        private bool initialized = false;
+
+        private readonly string currentDir = Environment.CurrentDirectory;
         private string currentFilePath;
         private FileStream currentFileStream;
         private StreamReader currentFileReader;
@@ -29,9 +39,14 @@ namespace mark
         {
             InitializeComponent();
             if (args.Length == 0)
+            {
                 init();
+                initialized = true;
+            }
             else
+            {
                 init(args[0]);
+            }
         }
 
         private void init(string filePath)
@@ -57,10 +72,9 @@ namespace mark
             this.currentFileReader = new StreamReader(currentFileStream);
             this.currentFileWriter = new StreamWriter(currentFileStream);
             this.currentFileContent = this.currentFileReader.ReadToEnd();
-
-            this.Text = "MarkEditor - " + this.currentFilePath;
+            
             this.richTextBox1.Text = this.currentFileContent;
-            this.updatePreview();
+            this.Text = "MarkEditor - " + this.currentFilePath;
         }
 
         private void init()
@@ -150,12 +164,25 @@ namespace mark
             }
         }
 
+        public void preview()
+        {
+            if (!initialized)
+            {
+                updatePreview();
+                initialized = true;
+            }
+            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+        }
+
 
         /* ========================================= UI ========================================== */
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            updatePreview();
-            updateUnsavedStatus();
+            if (initialized)
+            {
+                updatePreview();
+                updateUnsavedStatus();
+            }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
@@ -167,6 +194,7 @@ namespace mark
         {
             this.Size = new Size(1200, 650);
             this.Location = new Point(90, 30);
+            splitContainer1.Panel2Collapsed = true;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -203,7 +231,7 @@ namespace mark
 
         private void btnPreview_Click(object sender, EventArgs e)
         {
-            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+            preview();
         }
 
         private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
@@ -217,6 +245,11 @@ namespace mark
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             paste();
+        }
+
+        private void previewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            preview();
         }
     }
 }

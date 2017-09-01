@@ -19,15 +19,10 @@ namespace mark.Processor
 
         public static void Initialize()
         {
-            ToHtml("# This is for initialization");
+            ToHtml("# This is for initialization", null, false);
         }
 
-        public static string ToHtml(string src)
-        {
-            return ToHtml(src, null);
-        }
-
-        public static string ToHtml(string src, string currentDir)
+        public static string ToHtml(string src, string currentDir, bool transformUrl=true)
         {
             DateTime start = DateTime.Now;
             if (pipeline == null)
@@ -37,7 +32,8 @@ namespace mark.Processor
 
             start = DateTime.Now;
             MarkdownDocument doc = Markdown.Parse(src, pipeline);
-            TransformUrl(doc, currentDir);
+            if (transformUrl)
+                TransformUrl(doc, currentDir);
             var builder = new StringBuilder();
             var textwriter = new StringWriter(builder);
             var renderer = new HtmlRenderer(textwriter);
