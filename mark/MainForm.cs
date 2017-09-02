@@ -89,11 +89,11 @@ namespace mark
 
         public void updatePreview()
         {
-            String html = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
+            string html = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
             webBrowser1.DocumentText = html;
         }
 
-        public void updateUnsavedStatus()
+        private void updateUnsavedStatus()
         {
             if (!richTextBox1.Text.Equals(currentFileContent))
             {
@@ -107,7 +107,7 @@ namespace mark
             }
         }
 
-        public void save()
+        private void save()
         {
             if (currentFileStream == null)
             {
@@ -133,7 +133,7 @@ namespace mark
             {
                 Image img = Clipboard.GetImage();
                 string imgDir = currentDir + "/_image/";
-                string imgName = "a.jpg";
+                string imgName = DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss") + ".jpg";
                 if (!Directory.Exists(imgDir))
                     Directory.CreateDirectory(imgDir);
 
@@ -164,7 +164,7 @@ namespace mark
             }
         }
 
-        public void preview()
+        private void preview()
         {
             if (!initialized)
             {
