@@ -245,7 +245,12 @@ namespace mark
 
         private void richTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
+            if (e.KeyCode == Keys.Tab)
+            {
+                richTextBox1.SelectedText = "    ";
+                e.SuppressKeyPress = true;
+            }
+            else if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
             {
                 paste();
             }

@@ -59,10 +59,17 @@ namespace mark.Processor
                     string url = link.Url;
                     if (!urlRegex.IsMatch(url))
                     {
-                        if (!Path.IsPathRooted(url) && currentDir != null)
-                            url = Path.GetFullPath(Path.Combine(currentDir, url)).Replace('\\', '/');
-                        url = "file:///" + url;
-                        link.Url = url;
+                        try
+                        {
+                            if (!Path.IsPathRooted(url) && currentDir != null)
+                                url = Path.GetFullPath(Path.Combine(currentDir, url)).Replace('\\', '/');
+                            url = "file:///" + url;
+                            link.Url = url;
+                        }
+                        catch (Exception)
+                        {
+                            return;
+                        } 
                     }
                 }
                 TransformUrl(child, currentDir);
