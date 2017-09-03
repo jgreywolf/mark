@@ -18,6 +18,9 @@ namespace mark
     {
         private const bool DEBUG = true;
 
+        private readonly string startupPath = Application.StartupPath;
+        private readonly string currentDir = Environment.CurrentDirectory;
+
         /**
          * For initialization, there are two situations:
          * (1) No args. In this case, MarkEditor is initialized after init() method is finished.
@@ -27,8 +30,9 @@ namespace mark
          * 
          */
         private bool initialized = false;
-
-        private readonly string currentDir = Environment.CurrentDirectory;
+        // css style
+        private string style;
+        
         private string currentFilePath;
         private FileStream currentFileStream;
         private StreamReader currentFileReader;
@@ -47,6 +51,9 @@ namespace mark
             {
                 init(args[0]);
             }
+                        
+            if (File.Exists(startupPath + "/style.css"))
+                this.style = File.ReadAllText(startupPath + "/style.css");
         }
 
         private void init(string filePath)
@@ -90,6 +97,8 @@ namespace mark
         public void updatePreview()
         {
             string html = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
+            if (style != null)
+                html = "<style>\n" + style + "\n</style>\n" + html;
             webBrowser1.DocumentText = html;
         }
 

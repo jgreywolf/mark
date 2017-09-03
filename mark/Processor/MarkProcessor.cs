@@ -31,12 +31,14 @@ namespace mark.Processor
             TimeSpan span1 = end.Subtract(start);
 
             start = DateTime.Now;
-            MarkdownDocument doc = Markdown.Parse(src, pipeline);
-            if (transformUrl)
-                TransformUrl(doc, currentDir);
             var builder = new StringBuilder();
             var textwriter = new StringWriter(builder);
             var renderer = new HtmlRenderer(textwriter);
+            pipeline.Setup(renderer);
+
+            MarkdownDocument doc = Markdown.Parse(src, pipeline);
+            if (transformUrl)
+                TransformUrl(doc, currentDir);
             renderer.Render(doc);
             string result = builder.ToString();
             end = DateTime.Now;
