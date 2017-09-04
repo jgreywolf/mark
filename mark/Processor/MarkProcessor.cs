@@ -16,12 +16,7 @@ namespace mark.Processor
     {
         private static readonly Regex urlRegex = new Regex(@"^(http://|https://|ftp://|file:///)", RegexOptions.IgnoreCase);
         private static MarkdownPipeline pipeline = null;
-
-        public static void Initialize()
-        {
-            ToHtml("# This is for initialization", null, false);
-        }
-
+        
         public static string ToHtml(string src, string currentDir, bool transformUrl=true)
         {
             DateTime start = DateTime.Now;

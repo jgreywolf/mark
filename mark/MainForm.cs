@@ -22,14 +22,14 @@ namespace mark
         private readonly string currentDir = Environment.CurrentDirectory;
 
         /**
-         * For initialization, there are two situations:
-         * (1) No args. In this case, MarkEditor is initialized after init() method is finished.
-         * (2) One arg. In this case, MarkEditor is not fully initialized until preview() method
-         *     is called. Because it may prolong the launch time, it will not be automatically
-         *     called when launching MarkEditor.
+         * Only when initialized variable is true, will richTextBox's textChanged
+         * event trigger updating of preview screen. This variable will be set true
+         * after the Form is shown.
          * 
          */
         private bool initialized = false;
+        // whether to show preview on startup
+        private bool showPreviewOnStartup = true;
         // css style
         private string style;
         
@@ -43,15 +43,10 @@ namespace mark
         {
             InitializeComponent();
             if (args.Length == 0)
-            {
                 init();
-                initialized = true;
-            }
             else
-            {
                 init(args[0]);
-            }
-                        
+
             if (File.Exists(startupPath + "/style.css"))
                 this.style = File.ReadAllText(startupPath + "/style.css");
         }
@@ -99,6 +94,7 @@ namespace mark
             string html = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
             if (style != null)
                 html = "<style>\n" + style + "\n</style>\n" + html;
+            html = "<html><body style=\"background: white\">\n" + html + "\n</body></html>";
             webBrowser1.DocumentText = html;
         }
 
@@ -175,11 +171,6 @@ namespace mark
 
         private void preview()
         {
-            if (!initialized)
-            {
-                updatePreview();
-                initialized = true;
-            }
             splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
         }
 
@@ -204,11 +195,20 @@ namespace mark
             this.Size = new Size(1200, 650);
             this.Location = new Point(90, 30);
             splitContainer1.Panel2Collapsed = true;
+            webBrowser1.DocumentText = "<html><body style=\"background: white\">\n\n</body></html>";
+            richTextBox1.SelectionIndent = 10;
+            richTextBox1.SelectionRightIndent = 2;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
-            MarkProcessor.Initialize();
+            if (!initialized)
+            {
+                updatePreview();
+                initialized = true;
+            }
+            if (showPreviewOnStartup)
+                splitContainer1.Panel2Collapsed = false;
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -261,9 +261,20 @@ namespace mark
             paste();
         }
 
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(richTextBox1.SelectedText);
+        }
+
         private void previewToolStripMenuItem_Click(object sender, EventArgs e)
         {
             preview();
+        }
+
+        private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
+        {
+            int scrollHeight = webBrowser1.Document.Body.ScrollRectangle.Height;
+            webBrowser1.Document.Window.ScrollTo(0, scrollHeight);
         }
     }
 }
