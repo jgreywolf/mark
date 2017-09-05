@@ -186,7 +186,7 @@ namespace mark
                 foreach (string file in files)
                 {
                     string fileName = Path.GetFileName(file).Replace(" ", "");
-                    File.Copy(file, attachmentDir + fileName);
+                    File.Copy(file, attachmentDir + fileName, true);
                     Clipboard.SetText("["+fileName+"](./_attachment/"+fileName+")");
                     richTextBox1.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
                 }
@@ -195,6 +195,33 @@ namespace mark
             else
             {
                 richTextBox1.Paste(DataFormats.GetFormat(DataFormats.UnicodeText));
+            }
+        }
+
+        private void dragDrop(string[] fileList)
+        {
+            foreach (string file in fileList)
+            {
+                if (FileUtils.isImage(file))
+                {
+                    string imgDir = currentDir + "/_image/";
+                    string imgName = Path.GetFileName(file).Replace(" ", "");
+                    if (!Directory.Exists(imgDir))
+                        Directory.CreateDirectory(imgDir);
+
+                    File.Copy(file, imgDir + imgName, true);
+                    richTextBox1.SelectedText = "![](./_image/" + imgName + ")";
+                }
+                else
+                {
+                    string attachmentDir = currentDir + "/_attachment/";
+                    string fileName = Path.GetFileName(file).Replace(" ", "");
+                    if (!Directory.Exists(attachmentDir))
+                        Directory.CreateDirectory(attachmentDir);
+
+                    File.Copy(file, attachmentDir + fileName, true);
+                    richTextBox1.SelectedText = "[" + fileName + "](./_attachment/" + fileName + ")";
+                }
             }
         }
 
@@ -227,6 +254,8 @@ namespace mark
             webBrowser1.DocumentText = "<html><body style=\"background: white\">\n\n</body></html>";
             richTextBox1.SelectionIndent = 10;
             richTextBox1.SelectionRightIndent = 2;
+            richTextBox1.DragDrop += new DragEventHandler(richTextBox1_DragDrop);
+            richTextBox1.AllowDrop = true;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -287,6 +316,15 @@ namespace mark
             {
                 paste();
             }
+        }
+
+        private void richTextBox1_DragDrop(object sender, DragEventArgs e)
+        {
+            object filename = e.Data.GetData("FileDrop");
+            if (filename == null) return;
+            string[] fileList = filename as string[];
+            if (fileList == null) return;
+            this.dragDrop(fileList);
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)

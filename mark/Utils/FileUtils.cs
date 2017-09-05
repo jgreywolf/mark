@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace mark.Utils
 {
@@ -24,6 +25,15 @@ namespace mark.Utils
                 return new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
 
             return null;
+        }
+
+        private static readonly Regex imageRegex = new Regex(
+            @"(\.jpeg|\.jpg|\.png|\.bmp|\.gif|\.ico)$",
+            RegexOptions.IgnoreCase);
+
+        public static bool isImage(string filePath)
+        {
+            return imageRegex.IsMatch(filePath);
         }
     }
 }
