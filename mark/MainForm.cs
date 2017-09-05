@@ -53,6 +53,8 @@ namespace mark
 
             if (File.Exists(startupPath + "/style.css"))
                 this.style = File.ReadAllText(startupPath + "/style.css");
+            else
+                this.style = Properties.Resources.style;
         }
 
         private void init(string filePath)
@@ -334,6 +336,7 @@ namespace mark
 
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (richTextBox1.SelectedText == null || richTextBox1.SelectedText.Equals("")) return;
             Clipboard.SetText(richTextBox1.SelectedText);
         }
 

@@ -79,5 +79,34 @@ namespace mark.Properties {
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to     h1 {
+        ///        color: rgb(16, 163, 238);
+        ///        margin: 0.8em 0 0.6em;
+        ///        line-height: 1.6em;
+        ///    }
+        ///    h2 {
+        ///        color: rgb(16, 163, 238);
+        ///        line-height: 1.5em;
+        ///        margin-top: 1.5em;
+        ///    }
+        ///    h3, h4, h5, h6 {
+        ///        color: rgb(16, 163, 238);
+        ///        font-weight: normal;
+        ///        line-height: 1.5em;
+        ///        margin-top: 1.5em;
+        ///    }
+        ///    blockquote {
+        ///        box-sizing: border-box;
+        ///        margin: 1.6em 0;
+        ///        padding: 0 0 0 1.2em;
+        ///        border-left: 0.4em soli [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string style {
+            get {
+                return ResourceManager.GetString("style", resourceCulture);
+            }
+        }
     }
 }
