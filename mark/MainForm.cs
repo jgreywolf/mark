@@ -16,7 +16,11 @@ namespace mark
 {
     public partial class MainForm : Form
     {
-        private const bool DEBUG = true;
+        /**
+         * Set true to avoid file saving check before closing the window
+         *
+         */
+        private const bool DEBUG = false;
 
         private readonly string startupPath = Application.StartupPath;
         private readonly string currentDir = Environment.CurrentDirectory;
@@ -116,7 +120,32 @@ namespace mark
         {
             if (currentFileStream == null)
             {
-                MessageBox.Show("TODO: Show save file dialog");
+                saveFileDialog1.Filter = "Markdown (*.md)|*.md|Markdown (*.markdown)|*.markdown"
+                    + "|All files (*.*)|*.*";
+                if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+                {
+                    currentFilePath = saveFileDialog1.FileName;
+                    try
+                    {
+                        currentFileStream = FileUtils.getFileStream(currentFilePath, false);
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                        currentFilePath = null;
+                        return;
+                    }
+                    currentFileReader = new StreamReader(currentFileStream);
+                    currentFileWriter = new StreamWriter(currentFileStream);
+
+                    currentFileStream.SetLength(0);
+                    currentFileWriter.Write(richTextBox1.Text);
+                    currentFileWriter.Flush();
+                    this.currentFileContent = richTextBox1.Text;
+                    updateUnsavedStatus();
+
+                    this.Text = "MarkEditor - " + currentFilePath;
+                }
             }
             else
             {
@@ -214,6 +243,7 @@ namespace mark
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (DEBUG) return;
+
             if (!this.Text.EndsWith("*")) return;
             DialogResult dialogResult = MessageBox.Show(
                 "Save changes to\"" + currentFilePath + "\"?",
@@ -222,10 +252,13 @@ namespace mark
             if (dialogResult == DialogResult.Yes)
             {
                 save();
+                if (currentFileStream != null)
+                    currentFileStream.Close();
             }
             else if (dialogResult == DialogResult.No)
             {
-                // do nothing
+                if (currentFileStream != null)
+                    currentFileStream.Close();
             }
             else
             {
