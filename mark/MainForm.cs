@@ -92,6 +92,8 @@ namespace mark
             this.currentFileReader = null;
             this.currentFileWriter = null;
             this.currentFileContent = null;
+
+            this.richTextBox1.Text = "";
             this.Text = "MarkEditor - " + this.currentFilePath;
         }
 
@@ -327,6 +329,42 @@ namespace mark
             string[] fileList = filename as string[];
             if (fileList == null) return;
             this.dragDrop(fileList);
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!this.Text.EndsWith("*")) return;
+            DialogResult dialogResult = MessageBox.Show(
+                "Save changes to\"" + currentFilePath + "\"?",
+                "MarkEditor",
+                MessageBoxButtons.YesNoCancel);
+            if (dialogResult == DialogResult.Yes)
+            {
+                save();
+                if (currentFileStream != null)
+                    currentFileStream.Close();
+                init();
+            }
+            else if (dialogResult == DialogResult.No)
+            {
+                if (currentFileStream != null)
+                    currentFileStream.Close();
+                init();
+            }
+            else
+            {
+                // do nothing
+            }
+        }
+
+        private void openToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            openFileDialog1.Filter = "Markdown (*.md)|*.md|Markdown (*.markdown)|*.markdown"
+                    + "|All files (*.*)|*.*";
+            if (openFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                init(openFileDialog1.FileName);
+            }
         }
 
         private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
