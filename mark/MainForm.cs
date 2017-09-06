@@ -46,6 +46,12 @@ namespace mark
         public MainForm(string[] args)
         {
             InitializeComponent();
+
+            richTextBox1.SelectionIndent = 10;
+            richTextBox1.SelectionRightIndent = 2;
+            richTextBox1.DragDrop += new DragEventHandler(richTextBox1_DragDrop);
+            richTextBox1.AllowDrop = true;
+
             if (args.Length == 0)
                 init();
             else
@@ -256,10 +262,6 @@ namespace mark
             this.Location = new Point(90, 30);
             splitContainer1.Panel2Collapsed = true;
             webBrowser1.DocumentText = "<html><body style=\"background: white\">\n\n</body></html>";
-            richTextBox1.SelectionIndent = 10;
-            richTextBox1.SelectionRightIndent = 2;
-            richTextBox1.DragDrop += new DragEventHandler(richTextBox1_DragDrop);
-            richTextBox1.AllowDrop = true;
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -387,6 +389,11 @@ namespace mark
         {
             int scrollHeight = webBrowser1.Document.Body.ScrollRectangle.Height;
             webBrowser1.Document.Window.ScrollTo(0, scrollHeight);
+        }
+
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start("https://github.com/intfrog/mark");
         }
     }
 }
