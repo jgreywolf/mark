@@ -237,16 +237,26 @@ namespace mark
 
         private void preview()
         {
-            splitContainer1.Panel2Collapsed = !splitContainer1.Panel2Collapsed;
+            if (splitContainer1.Panel2Collapsed == true)
+            {
+                splitContainer1.Panel2Collapsed = false;
+                updatePreview();
+            }
+            else
+            {
+                splitContainer1.Panel2Collapsed = true;
+            }
         }
 
 
         /* ========================================= UI ========================================== */
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
+            // TODO: this code should be made asynchronous
             if (initialized)
             {
-                updatePreview();
+                if (splitContainer1.Panel2Collapsed == false)
+                    updatePreview();
                 updateUnsavedStatus();
             }
         }
@@ -321,6 +331,7 @@ namespace mark
             else if (e.Modifiers == Keys.Control && e.KeyCode == Keys.V)
             {
                 paste();
+                e.SuppressKeyPress = true;
             }
         }
 
@@ -394,6 +405,11 @@ namespace mark
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             AboutForm.GetInstance().ShowDialog();
+        }
+
+        private void previewOnlyPanelToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
         }
     }
 }
