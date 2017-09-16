@@ -272,7 +272,7 @@ namespace mark
             this.Size = new Size(1200, 650);
             this.Location = new Point(90, 30);
             splitContainer1.Panel2Collapsed = true;
-            webBrowser1.DocumentText = "<html>" + "<style>\n" + style + "\n</style>\n"
+            webBrowser1.DocumentText = "<html>\n<head>\n" + "<style>\n" + style + "\n</style>\n</head>\n"
                 + "<body id=\"body\" style=\"background: white\">\n\n</body></html>";
         }
 
