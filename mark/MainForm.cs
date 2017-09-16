@@ -105,11 +105,12 @@ namespace mark
 
         public void updatePreview()
         {
-            string html = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
-            if (style != null)
-                html = "<style>\n" + style + "\n</style>\n" + html;
-            html = "<html><body style=\"background: white\">\n" + html + "\n</body></html>";
-            webBrowser1.DocumentText = html;
+            string content = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
+            HtmlElement body = webBrowser1.Document.GetElementById("body");
+            if (body != null)
+                body.InnerHtml = content;
+            else
+                MessageBox.Show("Html body is null");
         }
 
         private void updateUnsavedStatus()
@@ -271,7 +272,8 @@ namespace mark
             this.Size = new Size(1200, 650);
             this.Location = new Point(90, 30);
             splitContainer1.Panel2Collapsed = true;
-            webBrowser1.DocumentText = "<html><body style=\"background: white\">\n\n</body></html>";
+            webBrowser1.DocumentText = "<html>" + "<style>\n" + style + "\n</style>\n"
+                + "<body id=\"body\" style=\"background: white\">\n\n</body></html>";
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
@@ -398,8 +400,8 @@ namespace mark
 
         private void webBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            int scrollHeight = webBrowser1.Document.Body.ScrollRectangle.Height;
-            webBrowser1.Document.Window.ScrollTo(0, scrollHeight);
+            //int scrollHeight = webBrowser1.Document.Body.ScrollRectangle.Height;
+            //webBrowser1.Document.Window.ScrollTo(0, scrollHeight);
         }
 
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
