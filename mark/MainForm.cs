@@ -411,5 +411,13 @@ namespace mark
         {
             splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
         }
+
+        private void webBrowser1_Navigating(object sender, WebBrowserNavigatingEventArgs e)
+        {
+            if (e.Url.AbsoluteUri == "about:blank") return;
+            // Open with system default web browser instead
+            e.Cancel = true;
+            System.Diagnostics.Process.Start(e.Url.AbsoluteUri);
+        }
     }
 }

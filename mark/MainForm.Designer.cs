@@ -39,6 +39,7 @@
             this.pasteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.previewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.previewOnlyPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
@@ -51,7 +52,6 @@
             this.btnPreview = new System.Windows.Forms.ToolStripButton();
             this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
-            this.previewOnlyPanelToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -120,14 +120,14 @@
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // pasteToolStripMenuItem
             // 
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             this.pasteToolStripMenuItem.Click += new System.EventHandler(this.pasteToolStripMenuItem_Click);
             // 
@@ -147,6 +147,14 @@
             this.previewToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
             this.previewToolStripMenuItem.Text = "Preview";
             this.previewToolStripMenuItem.Click += new System.EventHandler(this.previewToolStripMenuItem_Click);
+            // 
+            // previewOnlyPanelToolStripMenuItem
+            // 
+            this.previewOnlyPanelToolStripMenuItem.Name = "previewOnlyPanelToolStripMenuItem";
+            this.previewOnlyPanelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
+            this.previewOnlyPanelToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
+            this.previewOnlyPanelToolStripMenuItem.Text = "Preview Only";
+            this.previewOnlyPanelToolStripMenuItem.Click += new System.EventHandler(this.previewOnlyPanelToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
@@ -209,6 +217,7 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.WebBrowserShortcutsEnabled = false;
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.webBrowser1_DocumentCompleted);
+            this.webBrowser1.Navigating += new System.Windows.Forms.WebBrowserNavigatingEventHandler(this.webBrowser1_Navigating);
             // 
             // toolStrip1
             // 
@@ -264,14 +273,6 @@
             // openFileDialog1
             // 
             this.openFileDialog1.FileName = "openFileDialog1";
-            // 
-            // previewOnlyPanelToolStripMenuItem
-            // 
-            this.previewOnlyPanelToolStripMenuItem.Name = "previewOnlyPanelToolStripMenuItem";
-            this.previewOnlyPanelToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.P)));
-            this.previewOnlyPanelToolStripMenuItem.Size = new System.Drawing.Size(194, 22);
-            this.previewOnlyPanelToolStripMenuItem.Text = "Preview Only";
-            this.previewOnlyPanelToolStripMenuItem.Click += new System.EventHandler(this.previewOnlyPanelToolStripMenuItem_Click);
             // 
             // MainForm
             // 
