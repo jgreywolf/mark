@@ -103,12 +103,13 @@ namespace mark
             this.Text = "MarkEditor - " + this.currentFilePath;
         }
 
+        private string htmlBody;
         public void updatePreview()
         {
-            string content = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
+            htmlBody = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
             HtmlElement body = webBrowser1.Document.GetElementById("body");
             if (body != null)
-                body.InnerHtml = content;
+                body.InnerHtml = htmlBody;
             else
                 MessageBox.Show("Html body is null");
         }
@@ -253,7 +254,6 @@ namespace mark
         /* ========================================= UI ========================================== */
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
-            // TODO: this code should be made asynchronous
             if (initialized)
             {
                 if (splitContainer1.Panel2Collapsed == false)
@@ -420,6 +420,15 @@ namespace mark
             // Open with system default web browser instead
             e.Cancel = true;
             System.Diagnostics.Process.Start(e.Url.AbsoluteUri);
+        }
+
+        private void copyHTMLToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            string html = "<html>\n<head>\n" + "<style>\n" + style + "\n</style>\n</head>\n"
+                + "<body id=\"body\" style=\"background: white\">\n"
+                + htmlBody
+                + "\n</body></html>";
+            Clipboard.SetText(html);
         }
     }
 }
