@@ -107,6 +107,7 @@ namespace mark
         public void updatePreview()
         {
             htmlBody = MarkProcessor.ToHtml(richTextBox1.Text, currentDir);
+            htmlBody = Uri.UnescapeDataString(htmlBody);
             HtmlElement body = webBrowser1.Document.GetElementById("body");
             if (body != null)
                 body.InnerHtml = htmlBody;
