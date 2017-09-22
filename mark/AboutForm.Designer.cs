@@ -53,7 +53,7 @@
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(151, 15);
             this.label1.TabIndex = 1;
-            this.label1.Text = "MarkEditor 1.0.1";
+            this.label1.Text = "MarkEditor 1.0.2";
             // 
             // linkLabel1
             // 
