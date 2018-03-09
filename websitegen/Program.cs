@@ -103,8 +103,8 @@ namespace websitegen
 
             // generate index.html
             string indexHtmlBody = HtmlGenerator.MarkdownToHtml(readmeText, "website", true, true);
-            string indexHtml = "<html>\n<head>\n" + "<meta charset=\"utf-8\">"
-                            + "<title>" + title + "</title>"
+            string indexHtml = "<html>\n<head>\n" + "<meta charset=\"utf-8\">\n"
+                            + "<title>" + title + "</title>\n"
                             + "<style>\n" + style + "\n</style>\n"
                             + "</head>\n"
                             + "<body id=\"body\" style=\"background: white; margin-left: 50px\">\n"
