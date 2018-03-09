@@ -61,10 +61,14 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\config.config" />
-    <None Include="Resources\config.properties" />
     <None Include="Resources\style.css" />
     <None Include="Resources\websitegen.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\header.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\footer.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

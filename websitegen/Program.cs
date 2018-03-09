@@ -14,13 +14,16 @@ namespace websitegen
         // G:\VisualStudio\mark\websitegen\bin\Debug
         static string currentDir = Environment.CurrentDirectory;
 
+        static string configDir;
         static ConfigUtils configUtils;
         static string baseUrl;
         static string title;
 
         static string style;
+        static string header;
+        static string footer;
 
-        static void Main(string[] args)
+        static void init()
         {
             Console.WriteLine("startupPath=" + startupPath);
             Console.WriteLine("currentDir=" + currentDir);
@@ -32,23 +35,67 @@ namespace websitegen
                 currentDir = currentDir + "/blog";
             }
             
-            // read config file
-            if (!File.Exists(currentDir + "/websitegen.config"))
-                File.WriteAllText(currentDir + "/websitegen.config", Properties.Resources.websitegen);
-            configUtils = new ConfigUtils(currentDir + "/websitegen.config");
+            configDir = currentDir + "/config";
+            if (!Directory.Exists(configDir))
+                Directory.CreateDirectory(configDir);
+            else Console.WriteLine("using existing config.\n");
+
+            // read config
+            if (!File.Exists(configDir + "/websitegen.config"))
+                File.WriteAllText(configDir + "/websitegen.config", Properties.Resources.websitegen);
+            configUtils = new ConfigUtils(configDir + "/websitegen.config");
             baseUrl = configUtils.get("baseUrl");
             title = configUtils.get("title");
 
+
             // read style.css
-            if (!File.Exists(currentDir + "/style.css"))
-            {
-                File.WriteAllText(currentDir + "/style.css", Properties.Resources.style);
-                style = Properties.Resources.style;
-            }
+            string path = configDir + "/style.css";
+            if (File.Exists(path))
+                style = File.ReadAllText(path);
             else
             {
-                style = File.ReadAllText(currentDir + "/style.css");
+                style = Properties.Resources.style;
+                File.WriteAllText(path, style);
             }
+
+            // read header.html
+            path = configDir + "/header.html";
+            if (File.Exists(path))
+                header = File.ReadAllText(path);
+            else
+            {
+                header = Properties.Resources.header;
+                File.WriteAllText(path, header);
+            }
+
+            // read footer.html
+            path = configDir + "/footer.html";
+            if (File.Exists(path))
+                footer = File.ReadAllText(path);
+            else
+            {
+                footer = Properties.Resources.footer;
+                File.WriteAllText(path, footer);
+            }
+        }
+
+        static string renderHtml(string title, string htmlBody)
+        {
+            return "<html>\n<head>\n" + "<meta charset=\"utf-8\">\n"
+                + "<title>" + title + "</title>\n"
+                + "<style>\n" + style + "\n</style>\n"
+                + "</head>\n"
+                + "<body id=\"body\" style=\"background: white; margin: 0\">\n"
+                + "<header>\n" + header + "\n</header>\n"
+                + "<article>\n" + htmlBody + "\n</article>\n"
+                + "<hr/>\n"
+                + "<footer>\n" + footer + "\n</footer>\n"
+                + "</body></html>";
+        }
+
+        static void Main(string[] args)
+        {
+            init();
 
             // Get all categories
             DirectoryInfo directory = new DirectoryInfo(currentDir + "/src");
@@ -76,13 +123,7 @@ namespace websitegen
 
                         // convert to html
                         string htmlBody = HtmlGenerator.MarkdownToHtml(mdText, baseUrl + "/src/" + category);
-                        string html = "<html>\n<head>\n" + "<meta charset=\"utf-8\">\n"
-                            + "<title>" + fileNameWithoutExt + "</title>\n"
-                            + "<style>\n" + style + "\n</style>\n"
-                            + "</head>\n"
-                            + "<body id=\"body\" style=\"background: white; margin-left: 50px\">\n"
-                            + htmlBody
-                            + "\n</body></html>";
+                        string html = renderHtml(fileNameWithoutExt, htmlBody);
                         //Console.WriteLine(html);
 
                         // write to file
@@ -103,13 +144,7 @@ namespace websitegen
 
             // generate index.html
             string indexHtmlBody = HtmlGenerator.MarkdownToHtml(readmeText, "website", true, true);
-            string indexHtml = "<html>\n<head>\n" + "<meta charset=\"utf-8\">\n"
-                            + "<title>" + title + "</title>\n"
-                            + "<style>\n" + style + "\n</style>\n"
-                            + "</head>\n"
-                            + "<body id=\"body\" style=\"background: white; margin-left: 50px\">\n"
-                            + indexHtmlBody
-                            + "\n</body></html>";
+            string indexHtml = renderHtml(title, indexHtmlBody);
             //Console.WriteLine(indexHtml);
             File.WriteAllText(currentDir + "/index.html", indexHtml);
         }

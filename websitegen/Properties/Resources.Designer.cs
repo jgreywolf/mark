@@ -61,27 +61,53 @@ namespace websitegen.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to     h1 {
-        ///        color: rgb(16, 163, 238);
-        ///        margin: 0.8em 0 0.6em;
-        ///        line-height: 1.6em;
+        ///   Looks up a localized string similar to Copyright &amp;copy; intfrog.github.io.
+        /// </summary>
+        internal static string footer {
+            get {
+                return ResourceManager.GetString("footer", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &lt;ul&gt;
+        ///    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Home&lt;/a&gt;&lt;/li&gt;
+        ///    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;News&lt;/a&gt;&lt;/li&gt;
+        ///    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;Contact&lt;/a&gt;&lt;/li&gt;
+        ///    &lt;li&gt;&lt;a href=&quot;#&quot;&gt;About&lt;/a&gt;&lt;/li&gt;
+        ///&lt;/ul&gt;.
+        /// </summary>
+        internal static string header {
+            get {
+                return ResourceManager.GetString("header", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to     header ul {
+        ///        list-style-type: none;
+        ///        margin: 0;
+        ///        padding: 0;
+        ///        overflow: hidden;
+        ///        background-color: grey;
+        ///        position: fixed;
+        ///        top: 0;
+        ///        width: 100%;
         ///    }
-        ///    h2 {
-        ///        color: rgb(16, 163, 238);
-        ///        line-height: 1.5em;
-        ///        margin-top: 1.5em;
+        ///    header li {
+        ///        float: left;
         ///    }
-        ///    h3, h4, h5, h6 {
-        ///        color: rgb(16, 163, 238);
-        ///        font-weight: normal;
-        ///        line-height: 1.5em;
-        ///        margin-top: 1.5em;
+        ///    header li a {
+        ///        display: block;
+        ///        color: white;
+        ///        text-align: center;
+        ///        padding: 6px 16px;
+        ///        text-decoration: none;
         ///    }
-        ///    blockquote {
-        ///        box-sizing: border-box;
-        ///        margin: 1.6em 0;
-        ///        padding: 0 0 0 1.2em;
-        ///        border-left: 0.4em soli [rest of string was truncated]&quot;;.
+        ///    header li a:hover:not(.active) {
+        ///        background-color: #333;
+        ///    }
+        ///    [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string style {
             get {
