@@ -14,6 +14,7 @@ namespace websitegen
         // G:\VisualStudio\mark\websitegen\bin\Debug
         static string currentDir = Environment.CurrentDirectory;
 
+        static string toolsDir;
         static string configDir;
         static ConfigUtils configUtils;
         static string baseUrl;
@@ -34,6 +35,8 @@ namespace websitegen
                 Console.WriteLine("testing, changing currentDir to blog\n");
                 currentDir = currentDir + "/blog";
             }
+
+            toolsDir = currentDir + "/tools";
             
             configDir = currentDir + "/config";
             if (!Directory.Exists(configDir))
@@ -143,8 +146,25 @@ namespace websitegen
             File.WriteAllText(currentDir + "/src/README.md", readmeText);
 
             // generate index.html
-            string indexHtmlBody = HtmlGenerator.MarkdownToHtml(readmeText, "website", true, true);
-            string indexHtml = renderHtml(title, indexHtmlBody);
+            StringBuilder indexHtmlBody = new StringBuilder();
+            if (Directory.Exists(toolsDir))
+            {
+                DirectoryInfo toolsDirectory = new DirectoryInfo(toolsDir);
+                FileInfo[] tools = toolsDirectory.GetFiles();
+                if (tools != null && tools.Length > 0)
+                {
+                    indexHtmlBody.Append("<h2>Tools</h2>\n");
+                    foreach (FileInfo toolFile in tools)
+                    {
+                        indexHtmlBody.Append("<ul>\n")
+                            .Append("<li><a href=\"./tools/").Append(toolFile.Name).Append("\">").Append(toolFile.Name).Append("</a></li>\n")
+                            .Append("</ul>\n");
+                    }
+                }
+            }
+
+            indexHtmlBody.Append(HtmlGenerator.MarkdownToHtml(readmeText, "website", true, true));
+            string indexHtml = renderHtml(title, indexHtmlBody.ToString());
             //Console.WriteLine(indexHtml);
             File.WriteAllText(currentDir + "/index.html", indexHtml);
         }
