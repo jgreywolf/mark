@@ -119,18 +119,18 @@ namespace websitegen
                     {
                         string fileNameWithoutExt = mdFile.Name.Substring(0, mdFile.Name.LastIndexOf("."));
                         Console.WriteLine(mdFile.Name);
-                        readme.Append("* [" + fileNameWithoutExt + "](./" + category + "/" + mdFile.Name + ")\n");
+                        readme.Append("* [" + fileNameWithoutExt + "](./" + category.Name + "/" + mdFile.Name + ")\n");
 
                         // read from file
                         string mdText = File.ReadAllText(mdFile.FullName);
 
                         // convert to html
-                        string htmlBody = HtmlGenerator.MarkdownToHtml(mdText, baseUrl + "/src/" + category);
+                        string htmlBody = HtmlGenerator.MarkdownToHtml(mdText, baseUrl + "/src/" + category.Name);
                         string html = renderHtml(fileNameWithoutExt, htmlBody);
                         //Console.WriteLine(html);
 
                         // write to file
-                        string toDir = currentDir + "/website/" + category;
+                        string toDir = currentDir + "/website/" + category.Name;
                         if (!Directory.Exists(toDir))
                             Directory.CreateDirectory(toDir);
                         File.WriteAllText(toDir + "/" + fileNameWithoutExt + ".html", html);
